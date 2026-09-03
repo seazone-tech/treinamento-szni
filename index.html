@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Treinamento SZNI</title>
+<style>
+/* ── Design System: FUP Gestão de SPEs ── */
+:root{
+  --primary:#0055FF;--primary-fg:#FFF;
+  --sidebar-bg:#FFF;--sidebar-fg:#080E32;--sidebar-active-bg:#193CB8;--sidebar-active-fg:#FFF;--sidebar-hover:#F3F3F5;
+  --bg:#FFF;--fg:#080E32;--card:#FFF;--card-fg:#141A3C;--border:#E6E7EA;--muted:#E6E7EA;--muted-fg:#6B6E84;--accent:#F3F3F5;
+  --success:#059669;--warn:#CA3500;--warn-bg:#FFD6A8;--danger:#E7000B;--danger-bg:#FFE2E2;
+  --font:'Helvetica Neue',-apple-system,BlinkMacSystemFont,sans-serif;--r-lg:8px;--r-xl:12px;--r-full:9999px;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --primary:#3D7FFF;--sidebar-bg:#060C18;--sidebar-fg:#EDF0FA;--sidebar-active-bg:#3D7FFF;--sidebar-hover:#101422;
+  --bg:#080D1C;--fg:#EDF0FA;--card:#0E1326;--card-fg:#EDF0FA;--border:#242840;--muted:#161B30;--muted-fg:#8A8FAD;--accent:#131829;
+  --warn-bg:#441306;--danger-bg:#460809;
+}}
+:root[data-theme="dark"]{
+  --primary:#3D7FFF;--sidebar-bg:#060C18;--sidebar-fg:#EDF0FA;--sidebar-active-bg:#3D7FFF;--sidebar-hover:#101422;
+  --bg:#080D1C;--fg:#EDF0FA;--card:#0E1326;--card-fg:#EDF0FA;--border:#242840;--muted:#161B30;--muted-fg:#8A8FAD;--accent:#131829;
+  --warn-bg:#441306;--danger-bg:#460809;
+}
+:root[data-theme="light"]{
+  --primary:#0055FF;--sidebar-bg:#FFF;--sidebar-fg:#080E32;--sidebar-active-bg:#193CB8;--sidebar-hover:#F3F3F5;
+  --bg:#FFF;--fg:#080E32;--card:#FFF;--card-fg:#141A3C;--border:#E6E7EA;--muted:#E6E7EA;--muted-fg:#6B6E84;--accent:#F3F3F5;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--fg);font-size:14px}
+
+/* ── Shell ── */
+.shell{display:flex;height:100vh;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{width:240px;flex-shrink:0;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-logo{padding:16px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:28px;height:28px;border-radius:7px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;letter-spacing:.02em;flex-shrink:0}
+.logo-name{font-size:15px;font-weight:700;color:var(--sidebar-fg);line-height:1.1}
+.logo-sub{font-size:10px;font-weight:500;color:var(--muted-fg);text-transform:uppercase;letter-spacing:.05em;margin-top:1px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:1px}
+.sidebar-nav::-webkit-scrollbar{width:0}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-fg);padding:12px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-lg);cursor:pointer;color:var(--sidebar-fg);font-size:13px;font-weight:500;transition:background 120ms;text-decoration:none}
+.nav-item:hover{background:var(--sidebar-hover)}
+.nav-item.active{background:var(--sidebar-active-bg);color:var(--sidebar-active-fg)}
+.nav-num{font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted-fg);min-width:18px;flex-shrink:0}
+.nav-item.active .nav-num{color:rgba(255,255,255,.65)}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--success);flex-shrink:0;display:none;margin-left:auto}
+.nav-item.has-content .nav-dot{display:block}
+.nav-item.active .nav-dot{background:rgba(255,255,255,.7)}
+.nav-divider{height:1px;background:var(--border);margin:6px 4px}
+.sidebar-footer{border-top:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.user-avatar{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0}
+.user-name{font-size:12px;font-weight:600;color:var(--fg)}
+.user-role{font-size:10px;color:var(--muted-fg);margin-top:1px}
+
+/* ── Main ── */
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column;min-width:0}
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ── Topbar ── */
+.topbar{height:52px;flex-shrink:0;border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);position:sticky;top:0;z-index:10}
+.topbar-path{font-size:12px;color:var(--muted-fg);display:flex;align-items:center;gap:6px}
+.topbar-path span{color:var(--fg);font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.theme-btn{padding:5px 10px;border-radius:var(--r-lg);border:1px solid var(--border);background:var(--card);color:var(--muted-fg);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:var(--font);transition:background 120ms}
+.theme-btn:hover{background:var(--accent)}
+.save-indicator{font-size:11px;font-weight:600;color:var(--success);opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:4px}
+.save-indicator.show{opacity:1}
+
+/* ── Content ── */
+.content{padding:28px;flex:1}
+.module-header{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.module-icon{width:42px;height:42px;border-radius:11px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:19px;box-shadow:0 4px 14px color-mix(in srgb,var(--primary) 30%,transparent);flex-shrink:0}
+.module-title{font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--fg)}
+.module-sub{font-size:12px;color:var(--muted-fg);margin-top:2px}
+.intro-desc{font-size:13px;color:var(--muted-fg);line-height:1.6;margin-bottom:24px;max-width:580px;padding-left:56px}
+
+/* ── Theme cards ── */
+.themes-list{display:flex;flex-direction:column;gap:10px}
+
+.theme-card{border:1px solid var(--border);border-radius:var(--r-xl);background:var(--card);overflow:hidden;scroll-margin-top:68px;transition:box-shadow 150ms,border-color 150ms}
+.theme-card:hover{box-shadow:0 2px 12px color-mix(in srgb,var(--primary) 8%,transparent);border-color:color-mix(in srgb,var(--primary) 20%,var(--border))}
+
+.theme-header{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;user-select:none}
+
+.theme-num-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--accent);color:var(--muted-fg);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:32px;text-align:center}
+.theme-card.has-content .theme-num-pill{background:color-mix(in srgb,var(--primary) 10%,transparent);color:var(--primary)}
+
+.theme-title{flex:1;font-size:14px;font-weight:600;color:var(--card-fg)}
+.theme-card.has-content .theme-title{color:var(--primary)}
+
+.theme-toggle{color:var(--muted-fg);font-size:10px;transition:transform .2s;flex-shrink:0}
+.theme-card.open > .theme-header .theme-toggle{transform:rotate(180deg)}
+
+/* ── Card body ── */
+.theme-body{display:none;border-top:1px solid var(--border)}
+.theme-card.open > .theme-body{display:block}
+
+.card-content{padding:18px 20px 22px;display:flex;flex-direction:column;gap:18px}
+
+/* Field label */
+.field-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:7px}
+
+/* Textarea */
+.text-box{width:100%;background:var(--accent);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 14px;font-family:var(--font);font-size:13px;line-height:1.7;color:var(--fg);min-height:90px;outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.text-box:focus{border-color:var(--primary);background:var(--bg)}
+.text-box::placeholder{color:var(--muted-fg)}
+
+/* Links */
+.links-list{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+
+.link-item{display:flex;align-items:center;gap:10px;background:var(--accent);border:1px solid var(--border);border-radius:var(--r-lg);padding:9px 13px;transition:background 120ms}
+.link-item:hover{background:color-mix(in srgb,var(--primary) 5%,var(--accent))}
+
+.link-arrow{color:var(--primary);font-size:13px;flex-shrink:0}
+.link-info{flex:1;min-width:0}
+.link-name{font-size:13px;font-weight:600;color:var(--primary);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.link-name:hover{text-decoration:underline}
+.link-url-text{font-size:11px;color:var(--muted-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.link-del{background:none;border:none;color:var(--muted-fg);cursor:pointer;padding:3px 5px;border-radius:6px;font-size:12px;line-height:1;transition:color .12s,background .12s}
+.link-del:hover{color:var(--danger);background:var(--danger-bg)}
+
+.encaminhamento-box{border-color:color-mix(in srgb,var(--warn) 30%,var(--border));background:color-mix(in srgb,var(--warn-bg) 25%,var(--accent))}
+.encaminhamento-box:focus{border-color:var(--warn);background:var(--bg)}
+
+.no-links{font-size:12px;color:var(--muted-fg);font-style:italic;padding:4px 0}
+
+/* Add link row */
+.add-row{display:flex;gap:6px;flex-wrap:wrap}
+.input{flex:1;min-width:110px;background:var(--accent);border:1px solid var(--border);border-radius:var(--r-lg);padding:7px 11px;font-family:var(--font);font-size:12px;color:var(--fg);outline:none;transition:border-color .15s,background .15s}
+.input:focus{border-color:var(--primary);background:var(--bg)}
+.input::placeholder{color:var(--muted-fg)}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r-lg);font-size:12px;font-weight:700;border:1px solid var(--border);background:var(--card);color:var(--fg);cursor:pointer;font-family:var(--font);transition:background 120ms,color 120ms;white-space:nowrap;flex-shrink:0}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover{background:color-mix(in srgb,var(--primary) 85%,#000)}
+.btn:not(.btn-primary):hover{background:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">SZ</div>
+      <div>
+        <div class="logo-name">Seazone</div>
+        <div class="logo-sub">Treinamento SZNI</div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-section">Índice de Temas</div>
+      <div id="nav-list"></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-avatar">PM</div>
+      <div>
+        <div class="user-name">PMO Seazone</div>
+        <div class="user-role">Gestão de SPEs</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-path">
+        SZNI <span style="color:var(--muted-fg)">›</span> <span>Treinamento de Processos</span>
+      </div>
+      <div class="topbar-right">
+        <div class="save-indicator" id="save-ind">✓ Salvo</div>
+        <button class="theme-btn" id="theme-toggle" onclick="cycleTheme()">◑ Tema</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="module-header">
+        <div class="module-icon">📋</div>
+        <div>
+          <div class="module-title">Central de Treinamento</div>
+          <div class="module-sub">Processos e referências SZNI — expanda cada tema para adicionar conteúdo</div>
+        </div>
+      </div>
+      <div class="intro-desc">
+        Material de referência dos processos internos SZNI. Cada tema possui uma caixa de texto para descrição e uma seção de links de apoio. O conteúdo é salvo automaticamente no navegador.
+      </div>
+
+      <div class="themes-list" id="themes-container"></div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+const THEMES = [
+  { id: 'portal-sienge',      num: '01', title: 'Portal do Cliente Sienge' },
+  { id: 'painel-investidor',  num: '02', title: 'Painel do Investidor' },
+  { id: 'entrega-spots',      num: '03', title: 'Entrega de Spots' },
+  { id: 'parceria-csi-pmo',   num: '04', title: 'Parceria CSI & PMO' },
+  { id: 'onboarding-csi',     num: '05', title: 'Onboarding CSI com Investidor' },
+  { id: 'cadastro-invest',    num: '06', title: 'Cadastro de Investidores' },
+  { id: 'areas-szni',         num: '07', title: 'Áreas da SZNI e Direcionamento de Suportes' },
+  { id: 'canal-suportes',     num: '08', title: 'Novo Canal de Suportes Unificado' },
+  { id: 'financeiro',         num: '09', title: 'Financeiro — Boleto e Inadimplência' },
+  { id: 'csi-questiona',      num: '10', title: 'CSI Questiona' },
+  { id: 'faq',                num: '11', title: 'FAQ' },
+  { id: 'ata-treinamento-1',  num: '12', title: 'ATA e Transcrição — Treinamento 1' },
+];
+
+const STORAGE_KEY = 'szni_training_v1';
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function saveData(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    showSaveInd();
+    updateNavDots(data);
+    updateCardStates(data);
+  } catch(e) {}
+}
+
+let saveTimer2;
+function showSaveInd() {
+  const el = document.getElementById('save-ind');
+  el.classList.add('show');
+  clearTimeout(saveTimer2);
+  saveTimer2 = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+/* ── Nav ── */
+function buildNav(data) {
+  const nav = document.getElementById('nav-list');
+  nav.innerHTML = '';
+  THEMES.forEach(t => {
+    const hasContent = checkHasContent(data, t.id);
+    const el = document.createElement('a');
+    el.className = 'nav-item' + (hasContent ? ' has-content' : '');
+    el.dataset.id = t.id;
+    el.href = '#' + t.id;
+    el.innerHTML = `<span class="nav-num">${t.num}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.title}</span><span class="nav-dot"></span>`;
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      openCard(t.id);
+      document.getElementById(t.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setActiveNav(t.id);
+    });
+    nav.appendChild(el);
+  });
+}
+
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+}
+
+function updateNavDots(data) {
+  document.querySelectorAll('.nav-item').forEach(el => {
+    const id = el.dataset.id;
+    el.classList.toggle('has-content', checkHasContent(data, id));
+  });
+}
+
+function checkHasContent(data, id) {
+  return !!(data[id]?.text?.trim() || data[id]?.links?.length > 0);
+}
+
+/* ── Cards ── */
+function buildCards(data) {
+  const container = document.getElementById('themes-container');
+  container.innerHTML = '';
+  THEMES.forEach((t, idx) => {
+    const td = data[t.id] || { text: '', links: [] };
+    const hasContent = checkHasContent(data, t.id);
+    const isFirst = idx === 0;
+
+    const card = document.createElement('div');
+    card.className = 'theme-card' + (hasContent ? ' has-content' : '') + (isFirst ? ' open' : '');
+    card.id = t.id;
+
+    card.innerHTML = `
+      <div class="theme-header" onclick="toggleCard('${t.id}')">
+        <span class="theme-num-pill">${t.num}</span>
+        <span class="theme-title">${t.title}</span>
+        <span class="theme-toggle">▾</span>
+      </div>
+      <div class="theme-body">
+        <div class="card-content">
+          <div>
+            <div class="field-label">Conteúdo / Descrição</div>
+            <textarea class="text-box" id="text-${t.id}" placeholder="Descreva os conceitos, etapas, responsáveis e observações deste tema..." rows="5">${escHtml(td.text || '')}</textarea>
+          </div>
+          <div>
+            <div class="field-label" style="color:var(--warn)">Encaminhamento Treinamento</div>
+            <textarea class="text-box encaminhamento-box" id="enc-${t.id}" placeholder="Registre aqui os encaminhamentos, ações e responsáveis definidos no treinamento..." rows="3">${escHtml(td.encaminhamento || '')}</textarea>
+          </div>
+          <div>
+            <div class="field-label">Links e Recursos</div>
+            <div class="links-list" id="links-${t.id}">${renderLinks(td.links || [], t.id)}</div>
+            <div class="add-row">
+              <input class="input" id="link-label-${t.id}" type="text" placeholder="Nome do link">
+              <input class="input" id="link-url-${t.id}" type="url" placeholder="https://...">
+              <button class="btn btn-primary" onclick="addLink('${t.id}')">+ Adicionar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+
+    const ta = document.getElementById(`text-${t.id}`);
+    const enc = document.getElementById(`enc-${t.id}`);
+    let saveTimer;
+    const onInput = () => { clearTimeout(saveTimer); saveTimer = setTimeout(() => persistTheme(t.id), 700); };
+    ta.addEventListener('input', onInput);
+    enc.addEventListener('input', onInput);
+    document.getElementById(`link-url-${t.id}`).addEventListener('keydown', e => {
+      if (e.key === 'Enter') addLink(t.id);
+    });
+  });
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderLinks(links, id) {
+  if (!links?.length) return `<div class="no-links">Nenhum link adicionado.</div>`;
+  return links.map((l, i) => `
+    <div class="link-item">
+      <span class="link-arrow">↗</span>
+      <div class="link-info">
+        <a class="link-name" href="${escHtml(l.url)}" target="_blank" rel="noopener">${escHtml(l.label || l.url)}</a>
+        <div class="link-url-text">${escHtml(l.url)}</div>
+      </div>
+      <button class="link-del" onclick="removeLink('${id}',${i})" title="Remover">✕</button>
+    </div>`).join('');
+}
+
+/* ── Interactions ── */
+function openCard(id) {
+  document.getElementById(id)?.classList.add('open');
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.toggle('open');
+  if (card.classList.contains('open')) setActiveNav(id);
+}
+
+function updateCardStates(data) {
+  THEMES.forEach(t => {
+    const card = document.getElementById(t.id);
+    if (card) card.classList.toggle('has-content', checkHasContent(data, t.id));
+  });
+}
+
+function persistTheme(id) {
+  const data = loadData();
+  if (!data[id]) data[id] = { text: '', encaminhamento: '', links: [] };
+  data[id].text = document.getElementById(`text-${id}`)?.value || '';
+  data[id].encaminhamento = document.getElementById(`enc-${id}`)?.value || '';
+  saveData(data);
+}
+
+function addLink(id) {
+  const lLabel = document.getElementById(`link-label-${id}`);
+  const lUrl   = document.getElementById(`link-url-${id}`);
+  const label = lLabel.value.trim();
+  const url   = lUrl.value.trim();
+  if (!url) { lUrl.focus(); return; }
+
+  const data = loadData();
+  if (!data[id]) data[id] = { text: '', links: [] };
+  if (!data[id].links) data[id].links = [];
+  data[id].links.push({ label: label || url, url });
+  saveData(data);
+
+  lLabel.value = ''; lUrl.value = '';
+  document.getElementById(`links-${id}`).innerHTML = renderLinks(data[id].links, id);
+}
+
+function removeLink(id, index) {
+  const data = loadData();
+  if (!data[id]?.links) return;
+  data[id].links.splice(index, 1);
+  saveData(data);
+  document.getElementById(`links-${id}`).innerHTML = renderLinks(data[id].links, id);
+}
+
+/* ── Theme toggle ── */
+function cycleTheme() {
+  const r = document.documentElement;
+  const cur = r.getAttribute('data-theme') || 'system';
+  const next = cur === 'system' ? 'dark' : cur === 'dark' ? 'light' : 'system';
+  if (next === 'system') r.removeAttribute('data-theme');
+  else r.setAttribute('data-theme', next);
+  try { localStorage.setItem('szni_theme', next); } catch(e) {}
+}
+
+/* ── Scroll spy ── */
+function setupScrollSpy() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) setActiveNav(e.target.id); });
+  }, { threshold: 0.2, rootMargin: '-52px 0px 0px 0px' });
+  THEMES.forEach(t => { const el = document.getElementById(t.id); if (el) obs.observe(el); });
+}
+
+/* ── Init ── */
+(function init() {
+  // Restore theme
+  try {
+    const saved = localStorage.getItem('szni_theme');
+    if (saved && saved !== 'system') document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+
+  const data = loadData();
+  buildNav(data);
+  buildCards(data);
+  setupScrollSpy();
+  setActiveNav(THEMES[0].id);
+})();
+</script>
+</body>
+</html>
