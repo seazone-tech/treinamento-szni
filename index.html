@@ -87,13 +87,13 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
 .theme-card{border:1px solid var(--border);border-radius:var(--r-xl);background:var(--card);overflow:hidden;scroll-margin-top:68px;transition:box-shadow 150ms,border-color 150ms}
 .theme-card:hover{box-shadow:0 2px 12px color-mix(in srgb,var(--primary) 8%,transparent);border-color:color-mix(in srgb,var(--primary) 20%,var(--border))}
 
-.theme-header{display:flex;align-items:center;gap:10px;padding:11px 14px 11px 18px}
+.theme-header{display:flex;align-items:center;gap:10px;padding:11px 14px 11px 18px;user-select:none}
 
 .theme-num-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--accent);color:var(--muted-fg);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:32px;text-align:center}
 .theme-card.has-content .theme-num-pill{background:color-mix(in srgb,var(--primary) 10%,transparent);color:var(--primary)}
 
 /* Título editável inline */
-.theme-title-wrap{flex:1;min-width:0;cursor:pointer}
+.theme-title-wrap{flex:1;min-width:0;cursor:pointer;user-select:text}
 .theme-title{font-size:14px;font-weight:600;color:var(--card-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .theme-card.has-content .theme-title{color:var(--primary)}
 .theme-title-input{display:none;width:100%;font-size:14px;font-weight:600;font-family:var(--font);color:var(--fg);background:var(--bg);border:1px solid var(--primary);border-radius:6px;padding:3px 8px;outline:none}
