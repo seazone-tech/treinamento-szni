@@ -86,8 +86,15 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
 .themes-list{display:flex;flex-direction:column;gap:10px}
 .theme-card{border:1px solid var(--border);border-radius:var(--r-xl);background:var(--card);overflow:hidden;scroll-margin-top:68px;transition:box-shadow 150ms,border-color 150ms}
 .theme-card:hover{box-shadow:0 2px 12px color-mix(in srgb,var(--primary) 8%,transparent);border-color:color-mix(in srgb,var(--primary) 20%,var(--border))}
+.theme-card.dragging{opacity:.4;box-shadow:none}
+.theme-card.drag-over{border-color:var(--primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 30%,transparent)}
 
-.theme-header{display:flex;align-items:center;gap:10px;padding:11px 14px 11px 18px;user-select:none}
+.theme-header{display:flex;align-items:center;gap:10px;padding:11px 14px 11px 10px;user-select:none}
+
+/* Drag handle */
+.drag-handle{cursor:grab;color:var(--muted-fg);font-size:14px;line-height:1;padding:2px 4px;flex-shrink:0;opacity:.45;transition:opacity .12s}
+.drag-handle:active{cursor:grabbing}
+.theme-card:hover .drag-handle{opacity:.75}
 
 .theme-num-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--accent);color:var(--muted-fg);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:32px;text-align:center}
 .theme-card.has-content .theme-num-pill{background:color-mix(in srgb,var(--primary) 10%,transparent);color:var(--primary)}
@@ -333,8 +340,10 @@ function buildCards(data) {
     card.className = 'theme-card' + (hasContent ? ' has-content' : '') + (isFirst ? ' open' : '');
     card.id = t.id;
 
+    card.draggable = true;
     card.innerHTML = `
       <div class="theme-header">
+        <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
         <span class="theme-num-pill">${t.num}</span>
         <div class="theme-title-wrap" title="Clique para renomear">
           <span class="theme-title">${escHtml(t.title)}</span>
@@ -400,6 +409,7 @@ function buildCards(data) {
   });
 
   if (THEMES.length) setActiveNav(THEMES[0].id);
+  setupDragDrop();
   setupScrollSpy();
 }
 
@@ -521,6 +531,52 @@ function removeLink(id, index) {
   data[id].links.splice(index, 1);
   saveData(data);
   document.getElementById(`links-${id}`).innerHTML = renderLinks(data[id].links, id);
+}
+
+/* ── Drag & Drop reorder ── */
+let dragSrcId = null;
+
+function setupDragDrop() {
+  document.querySelectorAll('.theme-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      dragSrcId = card.id;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('drag-over'));
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (card.id !== dragSrcId) {
+        document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('drag-over'));
+        card.classList.add('drag-over');
+      }
+    });
+    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!dragSrcId || card.id === dragSrcId) return;
+      const fromIdx = THEMES.findIndex(t => t.id === dragSrcId);
+      const toIdx   = THEMES.findIndex(t => t.id === card.id);
+      if (fromIdx === -1 || toIdx === -1) return;
+      const [moved] = THEMES.splice(fromIdx, 1);
+      THEMES.splice(toIdx, 0, moved);
+      rebuild();
+    });
+    // Prevent drag from textareas / inputs
+    card.querySelectorAll('textarea, input').forEach(el => {
+      el.addEventListener('mousedown', e => e.stopPropagation());
+    });
+    // Drag handle: only handle triggers drag
+    const handle = card.querySelector('.drag-handle');
+    if (handle) {
+      handle.addEventListener('mousedown', () => { card.draggable = true; });
+      card.addEventListener('mouseup', () => { card.draggable = false; setTimeout(() => { card.draggable = true; }, 0); });
+    }
+  });
 }
 
 /* ── Theme toggle ── */
