@@ -348,11 +348,11 @@ function buildCards(data) {
       <div class="theme-body">
         <div class="card-content">
           <div>
-            <div class="field-label">Conteúdo / Descrição</div>
+            <div class="field-label">Conteúdo</div>
             <textarea class="text-box" id="text-${t.id}" placeholder="Descreva os conceitos, etapas, responsáveis e observações deste tema..." rows="5">${escHtml(td.text || '')}</textarea>
           </div>
           <div>
-            <div class="field-label" style="color:var(--warn)">Encaminhamento Treinamento</div>
+            <div class="field-label" style="color:var(--warn)">Encaminhamento</div>
             <textarea class="text-box encaminhamento-box" id="enc-${t.id}" placeholder="Registre encaminhamentos, ações e responsáveis definidos no treinamento..." rows="3">${escHtml(td.encaminhamento || '')}</textarea>
           </div>
           <div>
