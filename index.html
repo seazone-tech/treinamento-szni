@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Treinamento SZNI</title>
 <style>
-/* ── Design System: FUP Gestão de SPEs ── */
 :root{
   --primary:#0055FF;--primary-fg:#FFF;
   --sidebar-bg:#FFF;--sidebar-fg:#080E32;--sidebar-active-bg:#193CB8;--sidebar-active-fg:#FFF;--sidebar-hover:#F3F3F5;
@@ -30,11 +29,9 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--fg);font-size:14px}
-
-/* ── Shell ── */
 .shell{display:flex;height:100vh;overflow:hidden}
 
-/* ── Sidebar ── */
+/* Sidebar */
 .sidebar{width:240px;flex-shrink:0;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .sidebar-logo{padding:16px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .logo-mark{width:28px;height:28px;border-radius:7px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;letter-spacing:.02em;flex-shrink:0}
@@ -51,18 +48,17 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
 .nav-dot{width:5px;height:5px;border-radius:50%;background:var(--success);flex-shrink:0;display:none;margin-left:auto}
 .nav-item.has-content .nav-dot{display:block}
 .nav-item.active .nav-dot{background:rgba(255,255,255,.7)}
-.nav-divider{height:1px;background:var(--border);margin:6px 4px}
 .sidebar-footer{border-top:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px}
 .user-avatar{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0}
 .user-name{font-size:12px;font-weight:600;color:var(--fg)}
 .user-role{font-size:10px;color:var(--muted-fg);margin-top:1px}
 
-/* ── Main ── */
+/* Main */
 .main{flex:1;overflow-y:auto;display:flex;flex-direction:column;min-width:0}
 .main::-webkit-scrollbar{width:6px}
 .main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-/* ── Topbar ── */
+/* Topbar */
 .topbar{height:52px;flex-shrink:0;border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);position:sticky;top:0;z-index:10}
 .topbar-path{font-size:12px;color:var(--muted-fg);display:flex;align-items:center;gap:6px}
 .topbar-path span{color:var(--fg);font-weight:600}
@@ -72,51 +68,62 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
 .save-indicator{font-size:11px;font-weight:600;color:var(--success);opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:4px}
 .save-indicator.show{opacity:1}
 
-/* ── Content ── */
+/* Content */
 .content{padding:28px;flex:1}
 .module-header{display:flex;align-items:center;gap:14px;margin-bottom:6px}
 .module-icon{width:42px;height:42px;border-radius:11px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:19px;box-shadow:0 4px 14px color-mix(in srgb,var(--primary) 30%,transparent);flex-shrink:0}
 .module-title{font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--fg)}
 .module-sub{font-size:12px;color:var(--muted-fg);margin-top:2px}
-.intro-desc{font-size:13px;color:var(--muted-fg);line-height:1.6;margin-bottom:24px;max-width:580px;padding-left:56px}
+.intro-desc{font-size:13px;color:var(--muted-fg);line-height:1.6;margin-bottom:20px;max-width:580px;padding-left:56px}
 
-/* ── Theme cards ── */
+/* Toolbar acima dos cards */
+.list-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-left:2px}
+.list-toolbar-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-fg)}
+.add-theme-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--r-lg);font-size:12px;font-weight:700;background:var(--primary);color:#fff;border:none;cursor:pointer;font-family:var(--font);transition:opacity 120ms}
+.add-theme-btn:hover{opacity:.85}
+
+/* Theme cards */
 .themes-list{display:flex;flex-direction:column;gap:10px}
-
 .theme-card{border:1px solid var(--border);border-radius:var(--r-xl);background:var(--card);overflow:hidden;scroll-margin-top:68px;transition:box-shadow 150ms,border-color 150ms}
 .theme-card:hover{box-shadow:0 2px 12px color-mix(in srgb,var(--primary) 8%,transparent);border-color:color-mix(in srgb,var(--primary) 20%,var(--border))}
 
-.theme-header{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;user-select:none}
+.theme-header{display:flex;align-items:center;gap:10px;padding:11px 14px 11px 18px}
 
 .theme-num-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--accent);color:var(--muted-fg);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:32px;text-align:center}
 .theme-card.has-content .theme-num-pill{background:color-mix(in srgb,var(--primary) 10%,transparent);color:var(--primary)}
 
-.theme-title{flex:1;font-size:14px;font-weight:600;color:var(--card-fg)}
+/* Título editável inline */
+.theme-title-wrap{flex:1;min-width:0;cursor:pointer}
+.theme-title{font-size:14px;font-weight:600;color:var(--card-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .theme-card.has-content .theme-title{color:var(--primary)}
+.theme-title-input{display:none;width:100%;font-size:14px;font-weight:600;font-family:var(--font);color:var(--fg);background:var(--bg);border:1px solid var(--primary);border-radius:6px;padding:3px 8px;outline:none}
+.theme-title-wrap.editing .theme-title{display:none}
+.theme-title-wrap.editing .theme-title-input{display:block}
 
-.theme-toggle{color:var(--muted-fg);font-size:10px;transition:transform .2s;flex-shrink:0}
-.theme-card.open > .theme-header .theme-toggle{transform:rotate(180deg)}
+/* Ações do header */
+.theme-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.icon-btn{background:none;border:none;cursor:pointer;padding:5px 6px;border-radius:6px;font-size:13px;color:var(--muted-fg);transition:color .12s,background .12s;line-height:1;display:flex;align-items:center}
+.icon-btn:hover{background:var(--accent);color:var(--fg)}
+.icon-btn.del-btn:hover{background:var(--danger-bg);color:var(--danger)}
+.icon-btn.toggle-btn{font-size:10px;transition:color .12s,background .12s,transform .2s}
+.theme-card.open > .theme-header .toggle-btn{transform:rotate(180deg)}
 
-/* ── Card body ── */
+/* Card body */
 .theme-body{display:none;border-top:1px solid var(--border)}
 .theme-card.open > .theme-body{display:block}
-
 .card-content{padding:18px 20px 22px;display:flex;flex-direction:column;gap:18px}
 
-/* Field label */
 .field-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:7px}
 
-/* Textarea */
 .text-box{width:100%;background:var(--accent);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 14px;font-family:var(--font);font-size:13px;line-height:1.7;color:var(--fg);min-height:90px;outline:none;resize:vertical;transition:border-color .15s,background .15s}
 .text-box:focus{border-color:var(--primary);background:var(--bg)}
 .text-box::placeholder{color:var(--muted-fg)}
+.encaminhamento-box{border-color:color-mix(in srgb,var(--warn) 30%,var(--border));background:color-mix(in srgb,var(--warn-bg) 25%,var(--accent))}
+.encaminhamento-box:focus{border-color:var(--warn);background:var(--bg)}
 
-/* Links */
 .links-list{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-
 .link-item{display:flex;align-items:center;gap:10px;background:var(--accent);border:1px solid var(--border);border-radius:var(--r-lg);padding:9px 13px;transition:background 120ms}
 .link-item:hover{background:color-mix(in srgb,var(--primary) 5%,var(--accent))}
-
 .link-arrow{color:var(--primary);font-size:13px;flex-shrink:0}
 .link-info{flex:1;min-width:0}
 .link-name{font-size:13px;font-weight:600;color:var(--primary);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
@@ -124,13 +131,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
 .link-url-text{font-size:11px;color:var(--muted-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .link-del{background:none;border:none;color:var(--muted-fg);cursor:pointer;padding:3px 5px;border-radius:6px;font-size:12px;line-height:1;transition:color .12s,background .12s}
 .link-del:hover{color:var(--danger);background:var(--danger-bg)}
-
-.encaminhamento-box{border-color:color-mix(in srgb,var(--warn) 30%,var(--border));background:color-mix(in srgb,var(--warn-bg) 25%,var(--accent))}
-.encaminhamento-box:focus{border-color:var(--warn);background:var(--bg)}
-
 .no-links{font-size:12px;color:var(--muted-fg);font-style:italic;padding:4px 0}
 
-/* Add link row */
 .add-row{display:flex;gap:6px;flex-wrap:wrap}
 .input{flex:1;min-width:110px;background:var(--accent);border:1px solid var(--border);border-radius:var(--r-lg);padding:7px 11px;font-family:var(--font);font-size:12px;color:var(--fg);outline:none;transition:border-color .15s,background .15s}
 .input:focus{border-color:var(--primary);background:var(--bg)}
@@ -140,13 +142,19 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
 .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
 .btn-primary:hover{background:color-mix(in srgb,var(--primary) 85%,#000)}
 .btn:not(.btn-primary):hover{background:var(--accent)}
+
+/* Modal confirmação exclusão */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;max-width:360px;width:90%;box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.modal-title{font-size:15px;font-weight:700;color:var(--fg);margin-bottom:8px}
+.modal-msg{font-size:13px;color:var(--muted-fg);line-height:1.5;margin-bottom:20px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}
 </style>
 </head>
 <body>
 
 <div class="shell">
-
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-mark">SZ</div>
@@ -155,36 +163,23 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
         <div class="logo-sub">Treinamento SZNI</div>
       </div>
     </div>
-
     <div class="sidebar-nav">
       <div class="nav-section">Índice de Temas</div>
       <div id="nav-list"></div>
     </div>
-
-    <div class="sidebar-footer">
-      <div class="user-avatar">PM</div>
-      <div>
-        <div class="user-name">PMO Seazone</div>
-        <div class="user-role">Gestão de SPEs</div>
-      </div>
-    </div>
   </aside>
 
-  <!-- Main -->
   <div class="main">
-
-    <!-- Topbar -->
     <div class="topbar">
       <div class="topbar-path">
         SZNI <span style="color:var(--muted-fg)">›</span> <span>Treinamento de Processos</span>
       </div>
       <div class="topbar-right">
         <div class="save-indicator" id="save-ind">✓ Salvo</div>
-        <button class="theme-btn" id="theme-toggle" onclick="cycleTheme()">◑ Tema</button>
+        <button class="theme-btn" onclick="cycleTheme()">◑ Tema</button>
       </div>
     </div>
 
-    <!-- Content -->
     <div class="content">
       <div class="module-header">
         <div class="module-icon">📋</div>
@@ -194,17 +189,36 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--f
         </div>
       </div>
       <div class="intro-desc">
-        Material de referência dos processos internos SZNI. Cada tema possui uma caixa de texto para descrição e uma seção de links de apoio. O conteúdo é salvo automaticamente no navegador.
+        Material de referência dos processos internos SZNI. Clique no título de qualquer tema para renomeá-lo. O conteúdo é salvo automaticamente no navegador.
+      </div>
+
+      <div class="list-toolbar">
+        <span class="list-toolbar-label">Temas</span>
+        <button class="add-theme-btn" onclick="addTheme()">+ Novo tema</button>
       </div>
 
       <div class="themes-list" id="themes-container"></div>
     </div>
+  </div>
+</div>
 
-  </div><!-- /main -->
-</div><!-- /shell -->
+<!-- Modal exclusão -->
+<div class="modal-overlay" id="del-modal">
+  <div class="modal">
+    <div class="modal-title">Excluir tema?</div>
+    <div class="modal-msg" id="del-modal-msg">Todo o conteúdo deste tema será removido permanentemente.</div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeDelModal()">Cancelar</button>
+      <button class="btn btn-primary" style="background:var(--danger);border-color:var(--danger)" onclick="confirmDelete()">Excluir</button>
+    </div>
+  </div>
+</div>
 
 <script>
-const THEMES = [
+const STORAGE_KEY   = 'szni_training_v1';
+const THEMES_KEY    = 'szni_themes_v1';
+
+const DEFAULT_THEMES = [
   { id: 'portal-sienge',      num: '01', title: 'Portal do Cliente Sienge' },
   { id: 'painel-investidor',  num: '02', title: 'Painel do Investidor' },
   { id: 'entrega-spots',      num: '03', title: 'Entrega de Spots' },
@@ -219,7 +233,20 @@ const THEMES = [
   { id: 'ata-treinamento-1',  num: '12', title: 'ATA e Transcrição — Treinamento 1' },
 ];
 
-const STORAGE_KEY = 'szni_training_v1';
+/* ── State ── */
+let THEMES = [];
+let pendingDeleteId = null;
+
+function loadThemes() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(THEMES_KEY));
+    return Array.isArray(saved) && saved.length ? saved : JSON.parse(JSON.stringify(DEFAULT_THEMES));
+  } catch { return JSON.parse(JSON.stringify(DEFAULT_THEMES)); }
+}
+
+function saveThemes() {
+  try { localStorage.setItem(THEMES_KEY, JSON.stringify(THEMES)); } catch(e) {}
+}
 
 function loadData() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
@@ -227,12 +254,7 @@ function loadData() {
 }
 
 function saveData(data) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    showSaveInd();
-    updateNavDots(data);
-    updateCardStates(data);
-  } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); showSaveInd(); } catch(e) {}
 }
 
 let saveTimer2;
@@ -241,6 +263,20 @@ function showSaveInd() {
   el.classList.add('show');
   clearTimeout(saveTimer2);
   saveTimer2 = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+/* ── Renumber ── */
+function renumber() {
+  THEMES.forEach((t, i) => { t.num = String(i + 1).padStart(2, '0'); });
+}
+
+/* ── Full rebuild ── */
+function rebuild() {
+  renumber();
+  saveThemes();
+  const data = loadData();
+  buildNav(data);
+  buildCards(data);
 }
 
 /* ── Nav ── */
@@ -253,7 +289,7 @@ function buildNav(data) {
     el.className = 'nav-item' + (hasContent ? ' has-content' : '');
     el.dataset.id = t.id;
     el.href = '#' + t.id;
-    el.innerHTML = `<span class="nav-num">${t.num}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.title}</span><span class="nav-dot"></span>`;
+    el.innerHTML = `<span class="nav-num">${t.num}</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(t.title)}</span><span class="nav-dot"></span>`;
     el.addEventListener('click', e => {
       e.preventDefault();
       openCard(t.id);
@@ -268,6 +304,11 @@ function setActiveNav(id) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.id === id));
 }
 
+function updateNavTitle(id, title) {
+  const el = document.querySelector(`.nav-item[data-id="${id}"] span:nth-child(2)`);
+  if (el) el.textContent = title;
+}
+
 function updateNavDots(data) {
   document.querySelectorAll('.nav-item').forEach(el => {
     const id = el.dataset.id;
@@ -276,7 +317,7 @@ function updateNavDots(data) {
 }
 
 function checkHasContent(data, id) {
-  return !!(data[id]?.text?.trim() || data[id]?.links?.length > 0);
+  return !!(data[id]?.text?.trim() || data[id]?.encaminhamento?.trim() || data[id]?.links?.length > 0);
 }
 
 /* ── Cards ── */
@@ -284,7 +325,7 @@ function buildCards(data) {
   const container = document.getElementById('themes-container');
   container.innerHTML = '';
   THEMES.forEach((t, idx) => {
-    const td = data[t.id] || { text: '', links: [] };
+    const td = data[t.id] || { text: '', encaminhamento: '', links: [] };
     const hasContent = checkHasContent(data, t.id);
     const isFirst = idx === 0;
 
@@ -293,10 +334,16 @@ function buildCards(data) {
     card.id = t.id;
 
     card.innerHTML = `
-      <div class="theme-header" onclick="toggleCard('${t.id}')">
+      <div class="theme-header">
         <span class="theme-num-pill">${t.num}</span>
-        <span class="theme-title">${t.title}</span>
-        <span class="theme-toggle">▾</span>
+        <div class="theme-title-wrap" title="Clique para renomear">
+          <span class="theme-title">${escHtml(t.title)}</span>
+          <input class="theme-title-input" type="text" value="${escHtml(t.title)}" maxlength="120">
+        </div>
+        <div class="theme-actions">
+          <button class="icon-btn del-btn" title="Excluir tema" onclick="askDelete('${t.id}')">✕</button>
+          <button class="icon-btn toggle-btn" title="Expandir / recolher" onclick="toggleCard('${t.id}')">▾</button>
+        </div>
       </div>
       <div class="theme-body">
         <div class="card-content">
@@ -306,7 +353,7 @@ function buildCards(data) {
           </div>
           <div>
             <div class="field-label" style="color:var(--warn)">Encaminhamento Treinamento</div>
-            <textarea class="text-box encaminhamento-box" id="enc-${t.id}" placeholder="Registre aqui os encaminhamentos, ações e responsáveis definidos no treinamento..." rows="3">${escHtml(td.encaminhamento || '')}</textarea>
+            <textarea class="text-box encaminhamento-box" id="enc-${t.id}" placeholder="Registre encaminhamentos, ações e responsáveis definidos no treinamento..." rows="3">${escHtml(td.encaminhamento || '')}</textarea>
           </div>
           <div>
             <div class="field-label">Links e Recursos</div>
@@ -322,20 +369,123 @@ function buildCards(data) {
     `;
     container.appendChild(card);
 
-    const ta = document.getElementById(`text-${t.id}`);
+    /* Rename inline */
+    const wrap  = card.querySelector('.theme-title-wrap');
+    const label = card.querySelector('.theme-title');
+    const input = card.querySelector('.theme-title-input');
+
+    wrap.addEventListener('click', e => {
+      if (e.target === input) return;
+      wrap.classList.add('editing');
+      input.focus();
+      input.select();
+    });
+    input.addEventListener('blur', () => commitRename(t.id, input, label, wrap));
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      if (e.key === 'Escape') { input.value = t.title; input.blur(); }
+    });
+
+    /* Auto-save textarea */
+    const ta  = document.getElementById(`text-${t.id}`);
     const enc = document.getElementById(`enc-${t.id}`);
     let saveTimer;
     const onInput = () => { clearTimeout(saveTimer); saveTimer = setTimeout(() => persistTheme(t.id), 700); };
     ta.addEventListener('input', onInput);
     enc.addEventListener('input', onInput);
+
     document.getElementById(`link-url-${t.id}`).addEventListener('keydown', e => {
       if (e.key === 'Enter') addLink(t.id);
     });
   });
+
+  if (THEMES.length) setActiveNav(THEMES[0].id);
+  setupScrollSpy();
 }
 
+function commitRename(id, input, label, wrap) {
+  wrap.classList.remove('editing');
+  const newTitle = input.value.trim();
+  if (!newTitle) { input.value = THEMES.find(t => t.id === id)?.title || ''; return; }
+  const theme = THEMES.find(t => t.id === id);
+  if (theme) {
+    theme.title = newTitle;
+    label.textContent = newTitle;
+    input.value = newTitle;
+    saveThemes();
+    updateNavTitle(id, newTitle);
+    showSaveInd();
+  }
+}
+
+/* ── Add theme ── */
+function addTheme() {
+  const id = 'tema-' + Date.now();
+  THEMES.push({ id, num: '', title: 'Novo Tema' });
+  rebuild();
+  // Auto-open e focar rename
+  setTimeout(() => {
+    const card = document.getElementById(id);
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const wrap = card.querySelector('.theme-title-wrap');
+    if (wrap) wrap.click();
+  }, 80);
+}
+
+/* ── Delete theme ── */
+function askDelete(id) {
+  pendingDeleteId = id;
+  const theme = THEMES.find(t => t.id === id);
+  document.getElementById('del-modal-msg').textContent =
+    `"${theme?.title || id}" e todo seu conteúdo serão removidos permanentemente.`;
+  document.getElementById('del-modal').classList.add('show');
+}
+
+function closeDelModal() {
+  document.getElementById('del-modal').classList.remove('show');
+  pendingDeleteId = null;
+}
+
+function confirmDelete() {
+  if (!pendingDeleteId) return;
+  const id = pendingDeleteId;
+  THEMES = THEMES.filter(t => t.id !== id);
+  const data = loadData();
+  delete data[id];
+  saveData(data);
+  closeDelModal();
+  rebuild();
+}
+
+document.getElementById('del-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeDelModal();
+});
+
+/* ── Interactions ── */
+function openCard(id) { document.getElementById(id)?.classList.add('open'); }
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.toggle('open');
+  if (card.classList.contains('open')) setActiveNav(id);
+}
+
+function persistTheme(id) {
+  const data = loadData();
+  if (!data[id]) data[id] = { text: '', encaminhamento: '', links: [] };
+  data[id].text = document.getElementById(`text-${id}`)?.value || '';
+  data[id].encaminhamento = document.getElementById(`enc-${id}`)?.value || '';
+  saveData(data);
+  const hasContent = checkHasContent(data, id);
+  document.getElementById(id)?.classList.toggle('has-content', hasContent);
+  document.querySelector(`.nav-item[data-id="${id}"]`)?.classList.toggle('has-content', hasContent);
+}
+
+/* ── Links ── */
 function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function renderLinks(links, id) {
@@ -351,46 +501,16 @@ function renderLinks(links, id) {
     </div>`).join('');
 }
 
-/* ── Interactions ── */
-function openCard(id) {
-  document.getElementById(id)?.classList.add('open');
-}
-
-function toggleCard(id) {
-  const card = document.getElementById(id);
-  if (!card) return;
-  card.classList.toggle('open');
-  if (card.classList.contains('open')) setActiveNav(id);
-}
-
-function updateCardStates(data) {
-  THEMES.forEach(t => {
-    const card = document.getElementById(t.id);
-    if (card) card.classList.toggle('has-content', checkHasContent(data, t.id));
-  });
-}
-
-function persistTheme(id) {
-  const data = loadData();
-  if (!data[id]) data[id] = { text: '', encaminhamento: '', links: [] };
-  data[id].text = document.getElementById(`text-${id}`)?.value || '';
-  data[id].encaminhamento = document.getElementById(`enc-${id}`)?.value || '';
-  saveData(data);
-}
-
 function addLink(id) {
   const lLabel = document.getElementById(`link-label-${id}`);
   const lUrl   = document.getElementById(`link-url-${id}`);
-  const label = lLabel.value.trim();
-  const url   = lUrl.value.trim();
+  const label = lLabel.value.trim(), url = lUrl.value.trim();
   if (!url) { lUrl.focus(); return; }
-
   const data = loadData();
-  if (!data[id]) data[id] = { text: '', links: [] };
+  if (!data[id]) data[id] = { text: '', encaminhamento: '', links: [] };
   if (!data[id].links) data[id].links = [];
   data[id].links.push({ label: label || url, url });
   saveData(data);
-
   lLabel.value = ''; lUrl.value = '';
   document.getElementById(`links-${id}`).innerHTML = renderLinks(data[id].links, id);
 }
@@ -423,17 +543,12 @@ function setupScrollSpy() {
 
 /* ── Init ── */
 (function init() {
-  // Restore theme
   try {
     const saved = localStorage.getItem('szni_theme');
     if (saved && saved !== 'system') document.documentElement.setAttribute('data-theme', saved);
   } catch(e) {}
-
-  const data = loadData();
-  buildNav(data);
-  buildCards(data);
-  setupScrollSpy();
-  setActiveNav(THEMES[0].id);
+  THEMES = loadThemes();
+  rebuild();
 })();
 </script>
 </body>
