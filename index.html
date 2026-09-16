@@ -291,6 +291,7 @@ const DEFAULT_THEMES = [
 let THEMES = [];
 let pendingDeleteId = null;
 let activeFilter = 'all';
+let openCards = null; // null = primeira carga (abre o 1º); Set após isso
 
 /* ── Storage ── */
 function loadThemes() {
@@ -414,15 +415,22 @@ function updateNavDot(id, status) {
 
 /* ── Cards ── */
 function buildCards(data) {
+  // captura quais cards estão abertos antes de destruir o DOM
+  if (openCards !== null) {
+    document.querySelectorAll('.theme-card.open').forEach(c => openCards.add(c.id));
+  }
+
   const container = document.getElementById('themes-container');
   container.innerHTML = '';
   THEMES.forEach((t, idx) => {
     const td = data[t.id] || { text: '', encaminhamento: '', links: [] };
     const status = t.status || 'pendente';
-    const isFirst = idx === 0;
+
+    // primeira carga: abre só o 1º; depois restaura o que estava aberto
+    const shouldOpen = openCards === null ? idx === 0 : openCards.has(t.id);
 
     const card = document.createElement('div');
-    card.className = 'theme-card' + (isFirst ? ' open' : '');
+    card.className = 'theme-card' + (shouldOpen ? ' open' : '');
     card.id = t.id;
     card.dataset.status = status;
     card.draggable = true;
@@ -489,6 +497,11 @@ function buildCards(data) {
     document.getElementById(`enc-${t.id}`).addEventListener('input', onInput);
     document.getElementById(`link-url-${t.id}`).addEventListener('keydown', e => { if (e.key === 'Enter') addLink(t.id); });
   });
+
+  // após primeira carga, inicializa o Set para as próximas
+  if (openCards === null) {
+    openCards = new Set(THEMES.slice(0,1).map(t => t.id));
+  }
 
   if (THEMES.length) setActiveNav(THEMES[0].id);
   applyFilter();
@@ -569,13 +582,21 @@ document.getElementById('del-modal').addEventListener('click', e => {
 });
 
 /* ── Interactions ── */
-function openCard(id) { document.getElementById(id)?.classList.add('open'); }
+function openCard(id) {
+  document.getElementById(id)?.classList.add('open');
+  openCards?.add(id);
+}
 
 function toggleCard(id) {
   const card = document.getElementById(id);
   if (!card) return;
   card.classList.toggle('open');
-  if (card.classList.contains('open')) setActiveNav(id);
+  if (card.classList.contains('open')) {
+    openCards?.add(id);
+    setActiveNav(id);
+  } else {
+    openCards?.delete(id);
+  }
 }
 
 function persistTheme(id) {
