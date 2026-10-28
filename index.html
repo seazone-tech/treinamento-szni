@@ -288,6 +288,28 @@ const DEFAULT_THEMES = [
   {id:'ata-treinamento-1', num:'12',title:'ATA e Transcrição — Treinamento 1',           status:'pendente'},
 ];
 
+// Materiais fixos por tema (vêm do código, aparecem para todos)
+const MATERIAIS = {
+  'areas-szni':     [{label:'Material: Suportes SZNI', url:'suportes-szni.html', desc:'Regras de direcionamento, áreas e caminhos, quem é quem, revisão antes de abrir e quiz'}],
+  'canal-suportes': [{label:'Material: Suportes SZNI', url:'suportes-szni.html', desc:'Agente Suporte SZNI, canais próprios e formulário · treinamento de 28/10'}],
+};
+
+function renderMateriais(id) {
+  const m = MATERIAIS[id];
+  if (!m) return '';
+  return `<div>
+    <div class="field-label" style="color:var(--primary)">Material de apoio</div>
+    <div class="links-list">${m.map(x => `
+      <div class="link-item">
+        <span class="link-arrow">📘</span>
+        <div class="link-info">
+          <a class="link-name" href="${escHtml(x.url)}" target="_blank" rel="noopener">${escHtml(x.label)}</a>
+          <div class="link-url-text">${escHtml(x.desc||x.url)}</div>
+        </div>
+      </div>`).join('')}</div>
+  </div>`;
+}
+
 let THEMES = [];
 let pendingDeleteId = null;
 let activeFilter = 'all';
@@ -455,6 +477,7 @@ function buildCards(data) {
       </div>
       <div class="theme-body">
         <div class="card-content">
+          ${renderMateriais(t.id)}
           <div>
             <div class="field-label">Conteúdo</div>
             <textarea class="text-box" id="text-${t.id}" placeholder="Descreva os conceitos, etapas, responsáveis e observações deste tema..." rows="5">${escHtml(td.text||'')}</textarea>

@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Suportes SZNI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: faixa navy de abertura + coluna de leitura com índice lateral fixo (vira lista no topo no celular) */
+:root{
+  --navy:#0B2545; --teal:#14B8A6; --teal-ink:#0F766E;
+  --bg:#F6F8FB; --surface:#FFFFFF; --fg:#13213A; --muted:#5A6B85; --line:#DCE3EC; --tint:#E8F6F4;
+  --warn:#B45309; --warn-bg:#FEF3E2; --bad:#B42318; --bad-bg:#FDECEA; --ok:#0F766E;
+  --hero-bg:#0B2545; --hero-fg:#F2F6FB; --hero-muted:#A9BCD6;
+  --f-display:'Manrope','Segoe UI',system-ui,sans-serif;
+  --f-body:'Source Sans 3','Segoe UI',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08111F; --surface:#0E1A2E; --fg:#E6EDF7; --muted:#93A4BE; --line:#22324A; --tint:#0D2B2C;
+  --teal:#2DD4BF; --teal-ink:#5EEAD4; --warn:#F5B454; --warn-bg:#2E2210; --bad:#F59A8F; --bad-bg:#33140F; --ok:#5EEAD4;
+  --hero-bg:#0A1A33; --hero-fg:#F2F6FB; --hero-muted:#8FA6C6; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#08111F; --surface:#0E1A2E; --fg:#E6EDF7; --muted:#93A4BE; --line:#22324A; --tint:#0D2B2C;
+  --teal:#2DD4BF; --teal-ink:#5EEAD4; --warn:#F5B454; --warn-bg:#2E2210; --bad:#F59A8F; --bad-bg:#33140F; --ok:#5EEAD4;
+  --hero-bg:#0A1A33; --hero-fg:#F2F6FB; --hero-muted:#8FA6C6; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6}
+a{color:var(--teal-ink)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.2;margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.82em;background:var(--tint);color:var(--teal-ink);padding:1px 6px;border-radius:5px;overflow-wrap:anywhere}
+.path .tag,.hero-meta span{overflow-wrap:anywhere;min-width:0}
+main>section,.hero-in>*{min-width:0}
+
+/* Hero */
+.hero{background:var(--hero-bg);color:var(--hero-fg)}
+.hero-in{max-width:1180px;margin:0 auto;padding-block:40px 36px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
+.eyebrow{font-family:var(--f-display);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.hero h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-.02em}
+.hero p{margin:0;max-width:62ch;color:var(--hero-muted);font-size:18px}
+.hero .back{color:var(--hero-muted);font-size:14px;text-decoration:none}
+.hero .back:hover{color:var(--hero-fg)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--hero-muted)}
+.hero-meta b{color:var(--hero-fg);font-weight:600}
+
+/* Shell */
+.shell{max-width:1180px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px;align-items:start}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);font-size:14px}
+.toc-t{font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:2px;counter-reset:t}
+.toc a{display:flex;gap:8px;padding:5px 8px;border-radius:6px;color:var(--fg);text-decoration:none}
+.toc a:hover{background:var(--tint)}
+.toc a.on{background:var(--tint);color:var(--teal-ink);font-weight:600}
+.toc a::before{counter-increment:t;content:counter(t,decimal-leading-zero);font-family:var(--f-mono);font-size:11px;color:var(--muted);padding-top:3px}
+.theme-btn{margin-top:16px;font:inherit;font-size:13px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:5px 10px;cursor:pointer}
+main{min-width:0;display:grid;gap:56px}
+section{display:grid;gap:18px;scroll-margin-top:20px;min-width:0}
+section>h2{font-size:28px;font-weight:800;letter-spacing:-.01em}
+section h3{font-size:19px;font-weight:700}
+.lead{margin:0;max-width:68ch;color:var(--muted);font-size:18px}
+p{margin:0;max-width:68ch}
+ul.plain{margin:0;padding-left:20px;display:grid;gap:6px;max-width:68ch}
+.src{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;max-width:none}
+.src b{font-weight:600}
+
+/* Resumo */
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:6px;align-content:start}
+.rule .k{font-family:var(--f-display);font-weight:800;font-size:15px;color:var(--teal-ink)}
+.rule p{font-size:16px}
+
+/* Tabelas */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.45}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.area{display:inline-block;font-weight:700;font-size:13px;padding:2px 9px;border-radius:999px;background:var(--tint);color:var(--teal-ink);white-space:nowrap}
+.area.old{background:var(--warn-bg);color:var(--warn)}
+.area.pmo{background:var(--navy);color:#fff}
+:root[data-theme="dark"] .area.pmo{background:var(--teal);color:#08111F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .area.pmo{background:var(--teal);color:#08111F}}
+
+/* Comparativo */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.path{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:12px;align-content:start;min-width:0}
+.path h3{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.path .tag{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:500}
+.path dl{margin:0;display:grid;gap:10px}
+.path dt{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.path dd{margin:0;font-size:16px}
+.callout{border-left:4px solid var(--teal);background:var(--tint);padding:14px 18px;border-radius:0 var(--r) var(--r) 0;max-width:72ch}
+.callout.warn{border-color:var(--warn);background:var(--warn-bg)}
+.callout.bad{border-color:var(--bad);background:var(--bad-bg)}
+.callout b{font-weight:700}
+
+/* Roteador */
+.router{display:grid;gap:8px}
+.route{display:grid;grid-template-columns:minmax(0,1.2fr) 28px minmax(0,1fr);gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px}
+.route .arrow{color:var(--teal);font-weight:800;text-align:center}
+.route .to{font-weight:600}
+
+/* Busca */
+.search{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search input{flex:1 1 260px;min-width:0;font:inherit;font-size:16px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+.search .count{font-size:14px;color:var(--muted)}
+
+/* Barras */
+.bars{display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.bar{display:grid;grid-template-columns:120px minmax(0,1fr) 44px;gap:12px;align-items:center;font-size:15px}
+.bar .track{height:14px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bar .fill{height:100%;background:var(--teal);border-radius:4px}
+.bar.hi .fill{background:var(--navy)}
+:root[data-theme="dark"] .bar.hi .fill{background:var(--hero-muted)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bar.hi .fill{background:var(--hero-muted)}}
+.bar .v{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.bars .note{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* Passos */
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;padding-bottom:18px;position:relative}
+.steps li::before{counter-increment:s;content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:14px;z-index:1}
+:root[data-theme="dark"] .steps li::before{background:var(--teal);color:#08111F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li::before{background:var(--teal);color:#08111F}}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.steps b{display:block;font-family:var(--f-display);font-size:16px}
+.steps span{color:var(--fg);font-size:16px}
+.status{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.status i{font-style:normal;font-size:13px;font-weight:600;padding:2px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+
+/* Checklist */
+.check{display:grid;gap:8px}
+.check-hero{border:2px solid var(--teal);border-radius:var(--r);padding:18px;background:var(--tint)}
+.check-hero .lead{font-family:var(--f-display);font-weight:700;font-size:18px;margin:0 0 10px}
+.check-hero .lead b{color:var(--teal-ink)}
+.pre3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.pre3 .c{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:var(--r);padding:14px 16px;display:grid;gap:4px}
+.pre3 .t{font-family:var(--f-display);font-weight:800;font-size:17px}
+.pre3 p{margin:0;font-size:14px;color:var(--muted)}
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.wc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;align-content:start}
+.wc .t{font-family:var(--f-display);font-weight:800;font-size:16px}
+.wc p{margin:0;font-size:14px;color:var(--muted)}.wc p b{color:var(--ink,inherit)}
+.pats{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0 0 18px}
+.pat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:start}
+.pat .big{grid-row:span 3;font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1;color:var(--teal-ink)}
+.pat .t{font-family:var(--f-display);font-weight:700;font-size:16px}
+.pat .d{font-size:13.5px;color:var(--muted)}
+.pat .r{font-size:13.5px}.pat .r b{color:var(--teal-ink)}
+.check label{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;cursor:pointer}
+.check input{width:18px;height:18px;margin-top:4px;accent-color:var(--teal)}
+.check label:has(input:checked){border-color:var(--teal);background:var(--tint)}
+.check label:has(input:checked) .q{text-decoration:line-through;color:var(--muted)}
+.check .q{font-weight:600}
+.check .h{display:block;font-size:15px;color:var(--muted)}
+.check-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.btn{font:inherit;font-size:14px;font-weight:600;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:6px 14px;cursor:pointer}
+.btn:hover{border-color:var(--teal)}
+
+/* Erros */
+.errs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.err{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;gap:6px;align-content:start}
+.err .x{font-weight:700;color:var(--bad)}
+.err .y{font-size:16px}
+.err .y b{color:var(--ok)}
+
+/* Casos */
+.cases{display:grid;gap:10px}
+details.case{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+details.case summary{cursor:pointer;list-style:none;padding:16px 18px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:baseline}
+details.case summary::-webkit-details-marker{display:none}
+details.case summary .n{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+details.case summary .t{font-weight:600}
+details.case summary .open{font-size:13px;font-weight:600;color:var(--teal-ink);white-space:nowrap}
+details.case[open] summary .open::after{content:" ▴"}
+details.case:not([open]) summary .open::after{content:" ▾"}
+details.case .ans{padding:0 18px 18px 18px;display:grid;gap:8px;border-top:1px solid var(--line);padding-top:14px;margin:0 0 0 0}
+details.case .ans ul{margin:0;padding-left:20px;display:grid;gap:4px}
+
+/* Em aberto */
+.open-list{display:grid;gap:8px}
+.open-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;font-size:16px}
+.pill{font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap;background:var(--warn-bg);color:var(--warn)}
+ol.disc{margin:0;padding-left:22px;display:grid;gap:8px;max-width:72ch}
+
+footer{border-top:1px solid var(--line);padding-top:18px;font-size:14px;color:var(--muted);display:grid;gap:4px}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:28px}
+  .toc{position:static;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+  .toc ol{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rules,.duo,.errs{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .toc ol{grid-template-columns:minmax(0,1fr)}
+  .route{grid-template-columns:minmax(0,1fr);gap:2px}
+  .route .arrow{text-align:left}
+  .bar{grid-template-columns:90px minmax(0,1fr) 36px}
+}
+</style>
+</head>
+<body>
+<style>
+/* v3 visual */
+:root{--c-ag:#0D9488;--c-canal:#D97706;--c-form:#4F46E5;--c-dir:#DB2777;--c-ag-bg:#E6F7F4;--c-canal-bg:#FEF3E2;--c-form-bg:#EEF0FF;--c-dir-bg:#FCE7F3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-ag:#0D9488;--c-canal:#D97706;--c-form:#6366F1;--c-dir:#EC4899;--c-ag-bg:#0D2B2C;--c-canal-bg:#2E2210;--c-form-bg:#1B1D3A;--c-dir-bg:#361224}}
+:root[data-theme="dark"]{--c-ag:#0D9488;--c-canal:#D97706;--c-form:#6366F1;--c-dir:#EC4899;--c-ag-bg:#0D2B2C;--c-canal-bg:#2E2210;--c-form-bg:#1B1D3A;--c-dir-bg:#361224}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:6px}
+.kpi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:12px 14px}
+.kpi b{display:block;font-family:var(--f-display);font-size:28px;font-weight:800;color:var(--hero-fg);line-height:1.1}
+.kpi span{font-size:13px;color:var(--hero-muted)}
+.kpi.bad b{color:#F5B454}
+main>section{margin-bottom:44px}
+main h2{font-size:26px;margin-bottom:14px}
+.sub{color:var(--muted);font-size:15px;margin:0 0 14px}
+/* 3 regras */
+.r3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.r3 .c{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:6px}
+.r3 .ic{width:40px;height:40px;border-radius:10px;background:var(--tint);color:var(--teal-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:18px}
+.r3 .t{font-family:var(--f-display);font-weight:700;font-size:17px}
+.r3 p{margin:0;font-size:15px;color:var(--muted)}
+/* diagrama */
+.diag{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.diag svg{width:100%;height:auto;display:block}
+.diag text{font-family:var(--f-body);font-size:13px;fill:var(--fg)}
+.diag .m{fill:var(--muted);font-size:12px}
+.diag .box{fill:var(--bg);stroke:var(--line)}
+.diag .ag{fill:var(--c-ag-bg);stroke:var(--c-ag)}
+.diag .pmo{fill:var(--navy);stroke:var(--navy)}
+.diag .pmo+text,.diag .wt{fill:#fff;font-weight:700}
+.diag .wt2{fill:#CFE0F5;font-size:12px}
+.diag .ln{stroke:var(--muted);stroke-width:1.5;fill:none}
+.diag .dash{stroke:var(--c-ag);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+/* legenda de caminho */
+.leg{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:14px;margin:8px 0 14px}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.leg i{width:12px;height:12px;border-radius:3px;display:inline-block}
+/* grade de áreas */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.ac{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:var(--r);padding:12px 14px;display:grid;gap:8px;align-content:start}
+.ac[data-p="ag"]{--acc:var(--c-ag)}.ac[data-p="canal"]{--acc:var(--c-canal)}.ac[data-p="form"]{--acc:var(--c-form)}.ac[data-p="dir"]{--acc:var(--c-dir)}
+.ac .hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ac .nm{font-family:var(--f-display);font-weight:800;font-size:18px}
+.ac .n{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.ac .path{font-size:12.5px;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:6px}
+.ac .path i{width:10px;height:10px;border-radius:3px;background:var(--acc);display:inline-block}
+.ac .path a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}.ac .path a:hover{text-decoration-thickness:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;background:var(--tint);color:var(--fg);padding:3px 9px;border-radius:999px;line-height:1.3}
+.ac .nt{font-size:13px;color:var(--muted)}
+.conf{display:inline-block;font-size:11.5px;font-weight:700;color:var(--warn);background:var(--warn-bg);padding:1px 7px;border-radius:999px;white-space:nowrap}
+.obs{border-left:4px solid var(--teal);background:var(--tint);padding:10px 14px;border-radius:0 var(--r) var(--r) 0;margin:14px 0;font-size:15px}
+/* barras */
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:120px 1fr 44px;align-items:center;gap:10px;font-size:14px}
+.bar .lb{font-weight:600}
+.bar .tr{position:relative;height:14px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar .fl{position:absolute;inset:0 auto 0 0;background:var(--teal);border-radius:0 4px 4px 0}
+.bar .fl.hot{background:var(--warn)}
+.bar .vl{font-family:var(--f-mono);font-size:13px;text-align:right;color:var(--fg)}
+.bar .tgt{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--navy)}
+.bar .tgt::after{content:"";}
+:root[data-theme="dark"] .bar .tgt{background:#E6EDF7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bar .tgt{background:#E6EDF7}}
+.barnote{font-size:13px;color:var(--muted);margin-top:8px}
+/* erros */
+.errs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.er{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:8px}
+.er .big{font-family:var(--f-display);font-size:34px;font-weight:800;color:var(--bad);line-height:1}
+.er .fromto{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px}
+.er .fromto .area{font-size:12px}
+.er .arrow{color:var(--muted)}
+.er .fx{font-size:14px}
+.er .fx b{color:var(--teal-ink)}
+/* mock de pedido */
+.msg{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;max-width:620px}
+.msg .who{font-size:13px;color:var(--muted)}
+.msg .ln{display:grid;grid-template-columns:110px 1fr;gap:10px;font-size:15px}
+.msg .ln b{color:var(--teal-ink);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;padding-top:3px}
+.msg .ln span{background:var(--tint);padding:3px 8px;border-radius:6px}
+/* quiz */
+.quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.quiz details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px}
+.quiz summary{cursor:pointer;font-size:15px;display:flex;gap:10px;align-items:baseline;list-style:none}
+.quiz summary::-webkit-details-marker{display:none}
+.quiz summary .n{font-family:var(--f-mono);font-size:12px;color:var(--teal-ink);background:var(--tint);padding:1px 7px;border-radius:5px}
+.quiz .ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* chips de canais */
+.chan{display:flex;flex-wrap:wrap;gap:8px}
+.chan span{font-family:var(--f-mono);font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface)}
+.wip{border:1px dashed var(--line);border-radius:var(--r);padding:12px 14px;color:var(--muted);font-size:14px}
+.open{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.open div{background:var(--warn-bg);color:var(--warn);border-radius:var(--r);padding:10px 12px;font-size:14px;font-weight:600}
+</style>
+<header class="hero">
+  <div class="hero-in">
+    <a class="back" href="index.html">← Painel de treinamento SZNI</a>
+    <span class="eyebrow">Treinamento CSI · Suportes SZNI</span>
+    <h1>Direcionamento de suportes SZNI</h1>
+    <p><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener" style="color:inherit">#suporte-unificado-szni</a> · 05/08 → 26/10/2026</p>
+    <div class="kpis">
+      <div class="kpi"><b>190</b><span>chamados reais</span></div>
+      <div class="kpi bad"><b>25%</b><span>na área errada</span></div>
+      <div class="kpi"><b>31</b><span>redirecionados na mão</span></div>
+      <div class="kpi bad"><b>92 → 57</b><span>abertos em PMO · eram de PMO</span></div>
+      <div class="kpi"><b>12</b><span>sem chamado</span></div>
+    </div>
+    <div class="hero-meta"><span>Fonte: <b>varredura do canal + Taskdex</b> (26/10)</span><span>Treinamento PMO &gt; CSI 28/10: <a href="https://docs.google.com/document/d/1ipfcav2fEDnmLQOht46tHgNF7zuU57Sz5N4ikNnIqMs/edit" target="_blank" rel="noopener" style="color:inherit"><b>transcrição</b></a> · <a href="https://drive.google.com/drive/folders/19OfrWTQZjFh3hSoSj4qkvr_DsElDP0gr" target="_blank" rel="noopener" style="color:inherit"><b>gravação</b></a></span><button class="theme-btn" id="theme-btn" type="button">Tema</button></div>
+  </div>
+</header>
+<div class="shell">
+  <nav class="toc" aria-label="Índice"><div class="toc-t">Conteúdo</div>
+    <ol>
+      <li><a href="#regras">Regras</a></li>
+      <li><a href="#rumo">Modelo de atendimento</a></li>
+      <li><a href="#areas">Áreas e caminhos</a></li>
+      <li><a href="#erros">Desvios frequentes</a></li>
+      <li><a href="#checklist">Revisão antes de abrir</a></li>
+      <li><a href="#exercicio">Quiz</a></li>
+    </ol>
+  </nav>
+  <main>
+    <section id="regras">
+      <h2>Regras de direcionamento</h2>
+      <div class="r3">
+        <div class="c"><div class="ic">1</div><div class="t">Tema técnico primeiro</div><p>Planta → Projetos. Visita → Obras. Boleto → Financeiro. “Investidor” não é tema.</p></div>
+        <div class="c"><div class="ic">2</div><div class="t">PMO tem escopo próprio</div><p>Painel do Investidor, cronograma, comunicados e entrega.</p></div>
+        <div class="c"><div class="ic">3</div><div class="t">Pode marcar a Vera ou o PMO em qualquer suporte</div><p>Comunicação sensível, retorno muito técnico ou <b>sem resposta rápida</b>: marque de cara. A Vera monitora todos os suportes; até ela rodar 100%, marque o PMO.</p></div>
+      </div>
+    </section>
+
+    <section id="rumo">
+      <h2>Modelo de atendimento</h2>
+      <div class="diag">
+        <svg viewBox="0 0 900 250" role="img" aria-label="CSI abre chamado direto na área; agente PMO monitora e intervém quando a resposta não bate com as comunicações">
+          <rect class="box" x="20" y="95" width="120" height="60" rx="10"/><text x="80" y="120" text-anchor="middle" font-weight="700">CSI</text><text class="m" x="80" y="140" text-anchor="middle">abre o chamado</text>
+          <path class="ln" d="M140 125 H195"/><polygon points="195,120 205,125 195,130" fill="#5A6B85"/>
+          <rect class="ag" x="205" y="20" width="200" height="40" rx="8"/><text x="305" y="45" text-anchor="middle">Obras</text>
+          <rect class="ag" x="205" y="70" width="200" height="40" rx="8"/><text x="305" y="95" text-anchor="middle">Projetos</text>
+          <rect class="ag" x="205" y="120" width="200" height="40" rx="8"/><text x="305" y="145" text-anchor="middle">Orçamento · Lançamentos · Decor</text>
+          <rect class="ag" x="205" y="170" width="200" height="40" rx="8"/><text x="305" y="195" text-anchor="middle">Financeiro · Jurídico</text>
+          <text class="m" x="305" y="235" text-anchor="middle">cada área responde direto</text>
+          <path class="ln" d="M405 115 H430"/><polygon points="430,110 440,115 430,120" fill="#5A6B85"/>
+          <rect class="box" x="445" y="85" width="130" height="60" rx="10"/><text x="510" y="110" text-anchor="middle" font-weight="700">Investidor</text><text class="m" x="510" y="130" text-anchor="middle">recebe a resposta</text>
+          <rect class="pmo" x="640" y="30" width="230" height="64" rx="12"/><text x="755" y="56" text-anchor="middle" class="wt">Vera · agente PMO</text><text class="wt2" x="755" y="78" text-anchor="middle">monitora · redireciona · visão estratégica</text>
+          <path class="dash" d="M640 62 C560 62 520 70 510 85"/>
+          <rect class="box" x="640" y="150" width="230" height="60" rx="10"/><text x="755" y="174" text-anchor="middle" font-weight="700">Comunicações</text><text class="m" x="755" y="194" text-anchor="middle">Informativo · grupos · comunicados</text>
+          <path class="dash" d="M755 94 V150"/>
+        </svg>
+      </div>
+    </section>
+
+    <section id="areas">
+      <h2>Áreas e caminhos de abertura</h2>
+      <div class="leg"><span><i style="background:var(--c-ag)"></i>Agente Suporte SZNI (Slack)</span><span><i style="background:var(--c-canal)"></i>Canal próprio</span><span><i style="background:var(--c-form)"></i>Formulário Suporte Unificado</span></div>
+      <div class="search"><input id="busca-area" type="search" placeholder="Filtrar: planta, boleto, visita, AGE, matrícula…" aria-label="Filtrar áreas"><span class="count" id="busca-count"></span></div>
+      <div class="grid" id="grid-areas">
+        <div class="ac" data-p="ag"><div class="hd"><span class="nm">PMO</span><span class="n">57</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener">Agente Suporte SZNI</a></div><div class="chips"><span class="chip">Painel do Investidor (qualquer tema)</span><span class="chip">previsão de entrega · datas comunicadas</span><span class="chip">comunicados · grupos de WhatsApp</span><span class="chip">calendário de AGEs</span><span class="chip">processos de entrega*</span></div><div class="nt">* ressalvas de obra → Obras · ressalvas Decor → Decor. PMO responde pela data comunicada; o andamento e o que trava é da área.</div></div>
+        <div class="ac" data-p="ag"><div class="hd"><span class="nm">Obras</span><span class="n">42</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener">Agente Suporte SZNI</a></div><div class="chips"><span class="chip">visita à obra</span><span class="chip">vistoria · ressalvas</span><span class="chip">medição fora do calendário</span><span class="chip">reparos</span></div><div class="nt">Responde a partir do início da obra.</div></div>
+        <div class="ac" data-p="ag"><div class="hd"><span class="nm">Projetos</span><span class="n">35</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener">Agente Suporte SZNI</a></div><div class="chips"><span class="chip">planta executiva</span><span class="chip">numeração de cotas · aditivo</span><span class="chip">alteração de projeto</span><span class="chip">alvará · licenciamento</span><span class="chip">memorial executivo</span></div><div class="nt">Responde até a obra começar. Dúvida de projeto ou aditivo segue com Projetos mesmo em obra.</div></div>
+        <div class="ac" data-p="ag"><div class="hd"><span class="nm">Orçamento</span><span class="n">9</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener">Agente Suporte SZNI</a></div><div class="chips"><span class="chip">fluxo de caixa da obra</span><span class="chip">orçado × realizado</span><span class="chip">orçamento preliminar</span><span class="chip">chamada de capital: por quê e como se chegou ao valor</span><span class="chip">orçamento no Sienge</span></div><div class="nt">Fluxo de caixa da SPE é Financeiro. Boleto da chamada errado é Financeiro.</div></div>
+        <div class="ac" data-p="ag"><div class="hd"><span class="nm">Lançamentos</span><span class="n">8</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener">Agente Suporte SZNI</a></div><div class="chips"><span class="chip">planta de lançamento</span><span class="chip">planta comercial · 3D</span></div><div class="nt">Depois do handover para Projetos, planta é Projetos.</div></div>
+        <div class="ac" data-p="ag"><div class="hd"><span class="nm">Decor</span><span class="n">1</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0BP1KLS8EL" target="_blank" rel="noopener">Agente Suporte SZNI</a></div><div class="chips"><span class="chip">execução e entrega Decor</span><span class="chip">ressalvas Decor</span></div></div>
+        <div class="ac" data-p="canal"><div class="hd"><span class="nm">Financeiro</span><span class="n">19</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C09R9SXPZAP" target="_blank" rel="noopener">#suporte-financeiro-spes</a></div><div class="chips"><span class="chip">boleto</span><span class="chip">extrato</span><span class="chip">distrato</span><span class="chip">inadimplência</span><span class="chip">fluxo de caixa da SPE</span><span class="chip">cadastro de investidores</span><span class="chip">valores da ACS · cotas</span></div></div>
+        <div class="ac" data-p="canal"><div class="hd"><span class="nm">Jurídico</span><span class="n">6</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0A8XD6T6MU" target="_blank" rel="noopener">#suporte-juridico</a></div><div class="chips"><span class="chip">minuta de ACS · parte jurídica</span><span class="chip">individualização de matrículas</span><span class="chip">processos judiciais</span><span class="chip">informação de ata</span></div><div class="nt">Valores da ACS não são Jurídico: vão ao Financeiro.</div></div>
+        <div class="ac" data-p="form"><div class="hd"><span class="nm">Grandes Operações</span><span class="n">3</span></div><div class="path"><i></i><a href="https://seazone-fund.slack.com/archives/C0AM2DBTRT5" target="_blank" rel="noopener">#suporte-operação</a> · <a href="https://suporte-unificado.seazone.dev" target="_blank" rel="noopener">formulário</a></div><div class="chips"><span class="chip">apoios diversos após empreendimento em operação</span><span class="chip">condomínio · síndicos · anfitriões</span></div><div class="nt">Rede de apoio: passa o contato do síndico ou da administradora.</div></div>
+        <div class="ac" data-p="form"><div class="hd"><span class="nm">CSI</span><span class="n">3</span></div><div class="path"><i></i><a href="https://suporte-unificado.seazone.dev" target="_blank" rel="noopener">Formulário</a> · área Investimentos</div><div class="chips"><span class="chip">contato com o investidor</span><span class="chip">assinatura de documentos</span><span class="chip">disparo de comunicados</span></div><div class="nt">Pedido ao CSI não é deste canal.</div></div>
+      </div>
+      <div class="obs"><b>ACS e chamada de capital, combinado em 28/10:</b> minuta e cláusulas da ACS → Jurídico · valores da ACS e cotas → Financeiro · por quê da chamada de capital e como se chegou ao valor → Orçamento · boleto da chamada errado → Financeiro.</div>
+      <h3 style="margin:22px 0 10px;font-family:var(--f-display);font-size:18px">Quem é quem</h3>
+      <div class="who">
+        <div class="wc"><div class="t">Investimentos · Cris</div><p><b>PMO</b> Bruna · Isa · Duda</p><p><b>Projetos</b> Gui · Camila Amaral (projetos executivos) · Bia (aprovações e licenças)</p></div>
+        <div class="wc"><div class="t">Engenharia · reporta à Tati</div><p><b>Obras</b> Sabrina · Alice e Camila Fernanda (acompanhamento de obras) · Dejavan e Luís (Rosa Sul, presencial) · Paulo (vistorias)</p><p><b>Orçamento</b> Fran · Bruna · Isabela · Luana</p></div>
+        <div class="wc"><div class="t">Na dúvida</div><p>Marque <b>Bruna, Gui e Sabrina</b>. O desdobramento interno é com as áreas.</p><p>Suporte é para a <b>equipe</b>, não para a pessoa.</p></div>
+      </div>
+    </section>
+
+    <section id="erros">
+      <h2>Desvios mais frequentes</h2>
+      <p class="sub">47 chamados na área errada. Cinco padrões respondem por 41.</p>
+      <div class="errs">
+        <div class="er"><div class="big">12</div><div class="fromto"><span class="area pmo">PMO</span><span class="arrow">→</span><span class="area">Projetos</span></div><div class="fx">planta · alvará · Prefeitura</div></div>
+        <div class="er"><div class="big">9</div><div class="fromto"><span class="area pmo">PMO</span><span class="arrow">→</span><span class="area">Obras</span></div><div class="fx">visita · vistoria · medição</div></div>
+        <div class="er"><div class="big">8</div><div class="fromto"><span class="area pmo">PMO</span><span class="arrow">→</span><span class="area old">Financeiro</span></div><div class="fx">boleto · aporte · extrato</div></div>
+        <div class="er"><div class="big">6</div><div class="fromto"><span class="area pmo">PMO</span> / sem chamado <span class="arrow">→</span><span class="area old">Jurídico</span></div><div class="fx">matrícula · ACS</div></div>
+        <div class="er"><div class="big">6</div><div class="fromto"><span class="area pmo">PMO</span><span class="arrow">→</span><span class="area old">CSI · Grandes Op.</span></div><div class="fx">pedido ao CSI · entregue</div></div>
+      </div>
+    </section>
+
+
+    <section id="checklist">
+      <h2>Revisão antes de abrir</h2>
+      <div class="pre3">
+        <div class="c"><div class="t">Diagnóstico</div><p>Olhei Painel, Informativo e grupos antes de abrir?</p></div>
+        <div class="c"><div class="t">Recorrência</div><p>Esse assunto já apareceu antes, deste ou de outro investidor? Confira no Taskdex.</p></div>
+        <div class="c"><div class="t">Padrão</div><p>Mesmo tema, mesmo empreendimento? Aponte no chamado: vira ação, não resposta avulsa.</p></div>
+      </div>
+      <h3 style="margin:0 0 10px;font-family:var(--f-display);font-size:18px">Recorrências com padrão na varredura</h3>
+      <div class="pats">
+        <div class="pat"><div class="big">28</div><div class="t">Visita à obra</div><div class="d">11 empreendimentos · Ingleses sozinho tem 11 pedidos de 6 investidores (02/09 → 23/10) · 4 fora do prazo de 72 h úteis</div><div class="r"><b>Revisar antes:</b> janela de visita já divulgada? · <b>Padrão:</b> agenda por empreendimento, não pedido a pedido</div></div>
+        <div class="pat"><div class="big">25</div><div class="t">Painel do Investidor</div><div class="d">12 com dado errado ou desatualizado · 9 sem acesso · 2 documento ou boleto que não aparece</div><div class="r"><b>Revisar antes:</b> cadastro (PJ × CPF, e-mail trocado, duplicado) resolve parte dos acessos · <b>Padrão:</b> dado desatualizado é correção na fonte, não resposta ao investidor</div></div>
+        <div class="pat"><div class="big">17</div><div class="t">Slides de AGE</div><div class="d">10 assembleias · 2 a 3 chamados por AGE, um para cada área</div><div class="r"><b>Padrão que virou processo:</b> slides deixam de ser suporte</div></div>
+        <div class="pat"><div class="big">8</div><div class="t">Previsão de entrega</div><div class="d">Rosa Sul, Ingleses e Sul da Ilha repetem · 1 pedido cobriu 10 empreendimentos de uma vez</div><div class="r"><b>Revisar antes:</b> Informativo mensal e Painel · <b>Padrão:</b> investidor diz que o Painel está desatualizado</div></div>
+      </div>
+      <div class="check-hero">
+      <p class="lead">Checklist do CSI · <b>o agente Suporte SZNI também será treinado com estas regras</b></p>
+      <div class="check-bar"><span id="check-count">0 de 8</span><button class="btn" id="check-reset" type="button">Limpar</button></div>
+      <div class="check" id="check">
+        <label><input type="checkbox" id="c0"><span><span class="q">Fiz o diagnóstico antes de abrir?</span></span></label>
+        <label><input type="checkbox" id="c1"><span><span class="q">É suporte?</span></span></label>
+        <label><input type="checkbox" id="c2"><span><span class="q">Já saiu no Informativo ou nos grupos?</span></span></label>
+        <label><input type="checkbox" id="c3"><span><span class="q">Já existe chamado? O assunto já se repetiu?</span></span></label>
+        <label><input type="checkbox" id="c4"><span><span class="q">Qual é o tema técnico?</span></span></label>
+        <label><input type="checkbox" id="c5"><span><span class="q">Empreendimento + cota na mensagem?</span></span></label>
+        <label><input type="checkbox" id="c6"><span><span class="q">Sensível ou muito técnico? Marcar a Vera como apoio</span></span></label>
+        <label><input type="checkbox" id="c7"><span><span class="q">Tem padrão? Registrei no chamado</span></span></label>
+      </div>
+      </div>
+    </section>
+
+    <section id="exercicio">
+      <h2>Quiz</h2>
+      <p class="sub">Decida a área antes de abrir.</p>
+      <div class="quiz">
+        <details><summary><span class="n">01</span>Metragem do contrato não bate com o projeto.</summary><div class="ans"><span class="area">Projetos</span> + Vera como apoio</div></details>
+        <details><summary><span class="n">02</span>Visita à obra amanhã, fora do prazo.</summary><div class="ans"><span class="area">Obras</span> pedir exceção</div></details>
+        <details><summary><span class="n">03</span>Boleto não aparece no Painel do Investidor.</summary><div class="ans"><span class="area pmo">PMO</span> se o acesso está ok · <span class="area old">Financeiro</span> se o boleto está errado</div></details>
+        <details><summary><span class="n">04</span>Calendário de AGEs de 2026.</summary><div class="ans"><span class="area pmo">PMO</span></div></details>
+        <details><summary><span class="n">05</span>Síndico quer validar boleto de condomínio.</summary><div class="ans"><span class="area old">Grandes Operações</span> passa o contato do síndico</div></details>
+        <details><summary><span class="n">06</span>Área pede ao CSI para avisar investidora.</summary><div class="ans"><span class="area old">CSI</span> formulário · Investimentos</div></details>
+        <details><summary><span class="n">07</span>Fotos das correções para assinar o termo de aceite.</summary><div class="ans"><span class="area pmo">PMO</span> termo · <span class="area">Obras</span> fotos</div></details>
+        <details><summary><span class="n">08</span>Número do alvará e o que falta.</summary><div class="ans"><span class="area">Projetos</span></div></details>
+        <details><summary><span class="n">09</span>Documentos não aparecem no Painel do Investidor.</summary><div class="ans"><span class="area pmo">PMO</span></div></details>
+        <details><summary><span class="n">10</span>Valores da ACS vieram errados.</summary><div class="ans"><span class="area old">Financeiro</span> #suporte-financeiro-spes</div></details>
+        <details><summary><span class="n">11</span>Investidor quer entender por que houve a chamada de capital.</summary><div class="ans"><span class="area">Orçamento</span> · boleto errado → <span class="area old">Financeiro</span></div></details>
+        <details><summary><span class="n">12</span>Obra começou; dúvida sobre o aditivo de numeração.</summary><div class="ans"><span class="area">Projetos</span></div></details>
+        <details><summary><span class="n">13</span>Pede a planta de lançamento em 3D.</summary><div class="ans"><span class="area">Lançamentos</span> · planta executiva → <span class="area">Projetos</span></div></details>
+      </div>
+    </section>
+
+  </main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var t=localStorage.getItem('szni_theme');if(t==='dark'||t==='light')root.setAttribute('data-theme',t);}catch(e){}
+  document.getElementById('theme-btn').addEventListener('click',function(){var cur=root.getAttribute('data-theme')||'system';var next=cur==='system'?'dark':cur==='dark'?'light':'system';if(next==='system')root.removeAttribute('data-theme');else root.setAttribute('data-theme',next);try{localStorage.setItem('szni_theme',next);}catch(e){}});
+  var input=document.getElementById('busca-area'),cards=Array.prototype.slice.call(document.querySelectorAll('#grid-areas .ac')),count=document.getElementById('busca-count');
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+  function filter(){var q=norm(input.value.trim()),n=0;cards.forEach(function(c){var ok=!q||norm(c.textContent).indexOf(q)>-1;c.hidden=!ok;if(ok)n++;});count.textContent=q?n+' de '+cards.length:cards.length+' áreas';}
+  input.addEventListener('input',filter);filter();
+  var KEY='szni_suportes_check_v4',boxes=Array.prototype.slice.call(document.querySelectorAll('#check input')),saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
+  boxes.forEach(function(b){b.checked=!!saved[b.id];b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}upd();});});
+  function upd(){var n=boxes.filter(function(b){return b.checked;}).length;document.getElementById('check-count').textContent=n+' de '+boxes.length;}
+  document.getElementById('check-reset').addEventListener('click',function(){boxes.forEach(function(b){b.checked=false;});saved={};try{localStorage.removeItem(KEY);}catch(e){}upd();});upd();
+})();
+</script>
+</body>
+</html>
